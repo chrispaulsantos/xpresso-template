@@ -40,6 +40,11 @@ export class Logger {
         if (!id || id === '') {
             return message;
         }
-        return `${id} - ${message}`;
+
+        return JSON.stringify({
+            requestId: id,
+            message,
+            logger: this.name
+        });
     }
 }

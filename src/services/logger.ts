@@ -38,7 +38,10 @@ export class Logger {
     private formatMessage(message: string): string {
         const id = context.get('id');
         if (!id || id === '') {
-            return message;
+            return JSON.stringify({
+                message,
+                logger: this.name
+            });
         }
 
         return JSON.stringify({

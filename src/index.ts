@@ -6,7 +6,10 @@ import { Logger } from './services/logger';
 Logger.configure({
     appenders: {
         out: {
-            type: 'stdout'
+            type: 'stdout',
+            layout: {
+                type: 'messagePassThrough'
+            }
         }
     },
     categories: {

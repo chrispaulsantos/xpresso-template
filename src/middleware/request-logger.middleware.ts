@@ -24,7 +24,7 @@ export const requestLogger = (): RequestHandler => {
             status: parseInt(tokens.status(req, res), 10),
             url,
             forwardedFor: req.headers['x-forwarded-for'] ? `${req.headers['x-forwarded-for']} ` : '',
-            responseTime: +tokens['response-time'](req, res),
+            responseTime: +tokens['response-time'](req, res) * 1000, // Response time in ms
             requestId: req.id,
         };
 

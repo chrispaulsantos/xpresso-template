@@ -48,7 +48,8 @@ export class Logger {
     }
 
     private formatMessage(message: string): string {
-        const date = new Date().toISOString();
+        let date = new Date().toISOString();
+        date = date.slice(0, date.length - 1);
 
         const logMessage: LogMessage = {
             message,

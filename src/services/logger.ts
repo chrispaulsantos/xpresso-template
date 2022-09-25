@@ -61,6 +61,6 @@ export class Logger {
             logMessage.requestId = id;
         }
 
-        return JSON.stringify(message);
+        return JSON.stringify(logMessage);
     }
 }

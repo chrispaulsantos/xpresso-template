@@ -1,6 +1,18 @@
 import { Configuration, configure, getLogger } from 'log4js';
 const context = require('express-cls-hooked');
 
+export type LogMessage = {
+    date: string;
+    logger: string;
+    message?: string;
+    method?: string;
+    status?: number;
+    url?: string;
+    forwardedFor?: string;
+    responseTime?: number;
+    requestId?: string;
+}
+
 export class Logger {
     public static configure(config: Configuration) {
         configure(config);
@@ -36,18 +48,19 @@ export class Logger {
     }
 
     private formatMessage(message: string): string {
+        const date = new Date().toISOString();
+
+        const logMessage: LogMessage = {
+            message,
+            logger: this.name,
+            date
+        };
+
         const id = context.get('id');
-        if (!id || id === '') {
-            return JSON.stringify({
-                message,
-                logger: this.name
-            });
+        if (id) {
+            logMessage.requestId = id;
         }
 
-        return JSON.stringify({
-            requestId: id,
-            message,
-            logger: this.name
-        });
+        return JSON.stringify(message);
     }
 }

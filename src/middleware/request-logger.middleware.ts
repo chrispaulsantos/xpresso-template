@@ -1,6 +1,7 @@
 import { RequestHandler, Response } from 'express';
 import * as morgan from 'morgan';
 import { TokenIndexer } from 'morgan';
+import { LogMessage } from '../services/logger';
 import { Request } from '../typings/request';
 
 export const requestLogger = (): RequestHandler => {
@@ -16,13 +17,14 @@ export const requestLogger = (): RequestHandler => {
             url = match[1];
         }
         
-        const message = {
+        const message: LogMessage = {
             date,
+            logger: 'RequestLogger',
             method: tokens.method(req, res),
             status: parseInt(tokens.status(req, res), 10),
             url,
             forwardedFor: req.headers['x-forwarded-for'] ? `${req.headers['x-forwarded-for']} ` : '',
-            responseTime: tokens['response-time'](req, res),
+            responseTime: +tokens['response-time'](req, res),
             requestId: req.id,
         };
 

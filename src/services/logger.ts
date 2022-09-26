@@ -1,4 +1,5 @@
 import { Configuration, configure, getLogger } from 'log4js';
+import {serializeError} from 'serialize-error';
 const context = require('express-cls-hooked');
 
 export type LogMessage = {
@@ -28,31 +29,31 @@ export class Logger {
         this.name = name;
     }
 
-    public log(level: string, message: string): void {
+    public log(level: string, message: Object): void {
         getLogger(this.name).log(level, this.formatMessage(message));
     }
-    public fatal(message: string): void {
+    public fatal(message: Object): void {
         getLogger(this.name).fatal(this.formatMessage(message));
     }
-    public error(message: string): void {
+    public error(message: Object): void {
         getLogger(this.name).error(this.formatMessage(message));
     }
-    public warn(message: string): void {
+    public warn(message: Object): void {
         getLogger(this.name).warn(this.formatMessage(message));
     }
-    public info(message: string): void {
+    public info(message: Object): void {
         getLogger(this.name).info(this.formatMessage(message));
     }
-    public debug(message: string): void {
+    public debug(message: Object): void {
         getLogger(this.name).debug(this.formatMessage(message));
     }
 
-    private formatMessage(message: string): string {
+    private formatMessage(message: Object): string {
         let date = new Date().toISOString();
         date = date.slice(0, date.length - 1);
 
         const logMessage: LogMessage = {
-            message: JSON.stringify(message),
+            message: this.parseMessage(message),
             logger: this.name,
             date
         };
@@ -63,5 +64,17 @@ export class Logger {
         }
 
         return JSON.stringify(logMessage);
+    }
+
+    private parseMessage(message: Object): string {
+        if (typeof message === 'string') {
+            return message;
+        } else if (typeof message === 'number') {
+            return `${message}`;
+        } else if (message instanceof Error) {
+            return serializeError(message).toString();
+        } else {
+            return JSON.stringify(message);
+        }
     }
 }

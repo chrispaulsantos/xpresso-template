@@ -11,6 +11,7 @@ export type LogMessage = {
     forwardedFor?: string;
     responseTime?: number;
     requestId?: string;
+    error?: Error;
 }
 
 export class Logger {
@@ -62,6 +63,10 @@ export class Logger {
             logMessage.requestId = id;
         }
 
+        if (message instanceof Error) {
+            logMessage.error = message;
+        }
+
         return JSON.stringify(logMessage);
     }
 
@@ -71,7 +76,7 @@ export class Logger {
         } else if (typeof message === 'number') {
             return `${message}`;
         } else if (message instanceof Error) {
-            return JSON.stringify(message);
+            return message.message;
         } else {
             return JSON.stringify(message);
         }

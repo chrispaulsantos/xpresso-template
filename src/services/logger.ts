@@ -52,7 +52,7 @@ export class Logger {
         date = date.slice(0, date.length - 1);
 
         const logMessage: LogMessage = {
-            message,
+            message: JSON.stringify(message),
             logger: this.name,
             date
         };

@@ -16,10 +16,10 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-cls-hooked": "^0.3.8",
+    "express-http-context": "^1.2.4",
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.3.0",
     "morgan": "^1.10.0",
-    "serialize-error": "^11.0.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

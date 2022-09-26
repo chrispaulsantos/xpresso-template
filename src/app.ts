@@ -5,7 +5,7 @@ import { requestLogger } from './middleware/request-logger.middleware';
 import { generateRequestId } from './middleware/uuid.middleware';
 import { Logger } from './services/logger';
 import { Request } from './typings';
-const context = require('express-cls-hooked');
+import * as context from 'express-http-context';
 
 const LOGGER = Logger.getLogger();
 

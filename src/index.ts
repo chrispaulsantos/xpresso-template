@@ -2,6 +2,22 @@ import app from './app';
 import { connect } from './database';
 import { Logger } from './services/logger';
 
+if (!('toJSON' in Error.prototype)) {
+    Object.defineProperty(Error.prototype, 'toJSON', {
+        value: function () {
+            var alt: { [key:string]: any } = {};
+
+            Object.getOwnPropertyNames(this).forEach(function (key) {
+                alt[key] = this[key];
+            }, this);
+
+            return alt;
+        },
+        configurable: true,
+        writable: true
+    });
+}
+
 // Initialize logger
 Logger.configure({
     appenders: {

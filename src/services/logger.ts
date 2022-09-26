@@ -1,6 +1,5 @@
 import { Configuration, configure, getLogger } from 'log4js';
-import {serializeError} from 'serialize-error';
-const context = require('express-cls-hooked');
+import * as context from 'express-http-context';
 
 export type LogMessage = {
     date: string;
@@ -72,7 +71,7 @@ export class Logger {
         } else if (typeof message === 'number') {
             return `${message}`;
         } else if (message instanceof Error) {
-            return serializeError(message).toString();
+            return JSON.stringify(message);
         } else {
             return JSON.stringify(message);
         }
